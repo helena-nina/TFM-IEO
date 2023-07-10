@@ -1,3 +1,7 @@
+### ------------------------------------------------------------------------ ###
+### LBSPR ####
+### ------------------------------------------------------------------------ ###
+
 library(LBSPR)
 library(ggpubr)
 library(cowplot)
@@ -16,15 +20,6 @@ solePars@M <- 0.31
 solePars@L_units <- "cm"
 
 ### save de data as an .csv
-
-# lapply(seq_along(freq_list), function(i) {
-#   write.csv(freq_list[[i]], paste0(names(freq_list)[i], ".csv"), row.names = FALSE)
-# })
-# 
-# lapply(seq_along(wei_list), function(i) {
-#   write.csv(wei_list[[i]], paste0(names(wei_list)[i], ".csv"), row.names = FALSE)
-# })
-
 
 lapply(seq_along(freq_list), function(i) {
   write.csv(freq_list[[i]], file.path("freq_list",paste0(names(freq_list)[i],".csv")), row.names = FALSE)
@@ -73,34 +68,33 @@ for (archivo in archivos_csv) {
 #freq <- freq1[,1:13]
 # write.csv(freq, "input/freq.csv",row.names = FALSE)
 # freq <- read.csv("input/freq.csv",stringsAsFactors = FALSE)
-
+niter <- length(freq_list)
 soleLenFreq <- list()
 soleFit <- list()
 
+#start_time <- Sys.time()
 
-start_time <- Sys.time()
-
-for (i in 1:1000) {
-  
+for (i in 1:niter) {
+ 
   soleLenFreq[[i]] <- new("LB_lengths", LB_pars=solePars,file=paste0(i,".csv"), dataType="freq", header=TRUE)
   soleLenFreq[[i]]@L_units <- solePars@L_units
   soleFit[[i]] <- LBSPRfit(solePars, soleLenFreq[[i]]) ##Fitting the  model
   #print(i)
 }
 
-end_time <- Sys.time()
-end_time - start_time
+#end_time <- Sys.time()
+#end_time - start_time
 
-#  2.56 hours
+#2.56 hours
 
 #save(soleFit, file = "input/soleFit.RData")
 #save(soleFit, file = "input/soleFitmix.RData")
-# save(soleFit, file = "input/soleFitcrash.RData")
-# save(soleFit, file = "input/soleFit0.5fmsy.RData")
+#save(soleFit, file = "input/soleFitcrash.RData")
+#save(soleFit, file = "input/soleFit0.5fmsy.RData")
 
 soleFit_list <- list()
 
-for (i in 1:1000) {
+for (i in 1:niter) {
   #soleFit_list[[i]] <- soleFit[[i]]@Ests
   soleFit_list[[i]] <- data.frame(rawFM=soleFit[[i]]@FM, rawSPR=soleFit[[i]]@SPR)
 }
@@ -110,7 +104,9 @@ for (i in 1:1000) {
 # save(soleFit, file = "input/soleFit_list_fmsy1000.RData")
 # save(soleFit, file = "input/soleFit_list_fcrash.RData")
 
-### plots
+### ------------------------------------------------------------------------ ###
+### Plots ####
+### ------------------------------------------------------------------------ ###
 
 #plotSize(soleLenFreq)
 
@@ -158,20 +154,6 @@ p1 <- ggplot(spr_plot,aes(x=Year,y=spr, group = lines)) +
   xlab("Years")+ylab("SPR") + theme(legend.title =element_blank())
 
 
-# p1 <- ggplot(spr_plot,aes(x=Year,y=spr, group = lines)) +
-#   geom_line(aes(linetype = lines, color = lines)) + xlab("Years") + ylab("SPR")
-
-
-# windows()
-# par(mfrow=c(1,2))
-# plot(medians_SPR,lwd= 2,ylim = c(0.2,1),type = "l" , xlab = "years", ylab = "SPR")
-# lines(SPR_Q5 , lty = 2, type = "l")
-# lines(SPR_Q95, type = "l", lty = 2)
-# lines(c(0, 100), c(0.3, 0.3), col = "red",lty = 2)
-#legend(x = "topright",         # Posición
-#     legend = c("median"," confidence
-#interval","reference" ), # Textos de la leyenda,
-#  col = c("black","black","red"),lwd = c(2,1,1),lty = c(1,2,2), cex = 0.65) 
 
 ### F/M ratio
 
