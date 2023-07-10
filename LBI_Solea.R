@@ -65,7 +65,7 @@ for (i in 1:(niter-1)) {
 Lc_Lmat <- cbind(year=ind[[1]][,1],Lc_Lmat)
 #save(Lc_Lmat, file = "input/Lc_Lmat_fmsy.RData")
 
-
+### quantitative measures
 medians_Lc_Lmat <- apply(Lc_Lmat[,-1], 1, median) ## medians
 Lc_LmatQ5 <- apply(Lc_Lmat[,-1], 1, quantile, probs = 0.05)
 Lc_LmatQ95 <- apply(Lc_Lmat[,-1], 1, quantile, probs = 0.95)
@@ -84,6 +84,7 @@ for (i in 1:(niter-1)) {
 L25_Lmat <- cbind(year=ind[[1]][,1],L25_Lmat)
 #save(L25_Lmat, file = "input/L25_Lmat_fmsy.RData")
 
+### quantitative measures
 medians_L25_Lmat <- apply(L25_Lmat[,-1], 1, median) ## medians
 L25_LmatQ5 <- apply(L25_Lmat[,-1], 1, quantile, probs = 0.05) ## Q5
 L25_LmatQ95 <- apply(L25_Lmat[,-1], 1, quantile, probs = 0.95) ## Q95
@@ -102,12 +103,13 @@ for (i in 1:(niter-1)) {
 Lmax5_Linf <- cbind(year=ind[[1]][,1],Lmax5_Linf)
 #save(Lmax5_Linf, file = "input/Lmax5_Linf_fmsy.RData")
 
+### quantitative measures
 medians_Lmax5_Linf <- apply(Lmax5_Linf[,-1], 1, median) ## medians
 Lmax5_LinfQ5 <- apply(Lmax5_Linf[,-1], 1, quantile, probs = 0.05)
 Lmax5_LinfQ95 <- apply(Lmax5_Linf[,-1], 1, quantile, probs = 0.95)
 
 
-###
+### Pmega
 
 Pmega <- data.frame(iter1 = ind[[1]][,23])
 
@@ -120,11 +122,12 @@ for (i in 1:(niter-1)) {
 Pmega <- cbind(year=ind[[1]][,1],Pmega)
 #save(Pmega, file = "input/Pmega_fmsy.RData")
 
+### quantitative measures
 medians_Pmega  <- apply(Pmega[,-1], 1, median) ## medians
 PmegaQ5 <- apply(Pmega[,-1] , 1, quantile, probs = 0.05)
 PmegaQ95 <- apply(Pmega[,-1] , 1, quantile, probs = 0.95)
 
-###
+### Lmean_Lopt
 
 Lmean_Lopt <- data.frame(iter1 = ind[[1]][,19])
 
@@ -137,12 +140,13 @@ for (i in 1:(niter-1)) {
 Lmean_Lopt <- cbind(year=ind[[1]][,1],Lmean_Lopt)
 #save(Lmean_Lopt, file = "input/Lmean_Lopt_fmsy.RData")
 
+### quantitative measures
 medians_Lmean_Lopt  <- apply(Lmean_Lopt[,-1], 1, median) ## medians
 Lmean_LoptQ5 <- apply(Lmean_Lopt[,-1] , 1, quantile, probs = 0.05)
 Lmean_LoptQ95 <- apply(Lmean_Lopt[,-1] , 1, quantile, probs = 0.95)
 
 
-###
+### Lmean_L_FeM
 
 Lmean_L_FeM <- data.frame(iter1 = ind[[1]][,15])
 
@@ -155,6 +159,7 @@ for (i in 1:(niter-1)) {
 Lmean_L_FeM <- cbind(year=ind[[1]][,1],Lmean_L_FeM)
 #save(Lmean_L_FeM, file = "input/Lmean_L_FeM_fmsy.RData")
 
+### quantitative measures
 medians_Lmean_L_FeM  <- apply(Lmean_L_FeM[,-1], 1, median) ## medians
 Lmean_L_FeMQ5 <- apply(Lmean_L_FeM[,-1] , 1, quantile, probs = 0.05)
 Lmean_L_FeMQ95 <- apply(Lmean_L_FeM[,-1] , 1, quantile, probs = 0.95)
@@ -194,10 +199,7 @@ p1 <-ggplot(df_plot,aes(x=Year, y = Lc, group=lines)) +
   xlab("Years")+ylab("Lc/Lmat") + theme(legend.title =element_blank())
 
 
-
-
 ### L25_Lmat
-
 
 L25_Lmatgg <- data.frame(years, medians_L25_Lmat, L25_LmatQ5, L25_LmatQ95,ref_L25_Lmat)
 
@@ -247,7 +249,6 @@ p4 <- ggplot(df_plot4,aes(x=Year, y = Lc, group=lines)) +
   xlab("Years")+ylab("Pmega") + theme(legend.title =element_blank())
 
 
-
 ### Lmean_Lopt
 
 Lmean_Loptgg <- data.frame(years, medians_Lmean_Lopt,Lmean_LoptQ5, Lmean_LoptQ95,ref_Lmean_Lopt)
@@ -264,7 +265,6 @@ p5 <- ggplot(df_plot5,aes(x=Year, y = Lc, group=lines)) +
   scale_color_manual(values = c(rep("black",3),"red"))+
   scale_y_continuous(limits = c(0.7, max(df_plot$Lc)+0.2)) +
   xlab("Years")+ylab("Lmean/Lopt") + theme(legend.title =element_blank())
-
 
 
 ### Lmean_L_FeM 
