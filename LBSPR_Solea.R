@@ -19,6 +19,18 @@ solePars@MK <- 1.41
 solePars@M <- 0.31 
 solePars@L_units <- "cm"
 
+### We load size composition data 
+load("~/TFM/Repository/wklifeVII-1.0/R/input/freq_list_fmsy.RData")
+
+### We check that they have been imported correctly
+head(freq_list)
+
+### weights
+load("~/TFM/Repository/wklifeVII-1.0/R/input/wei_list_fmsy.RData")
+
+### We check that they have been imported correctly
+head(wei_list)
+
 ### save de data as an .csv
 
 lapply(seq_along(freq_list), function(i) {
@@ -132,8 +144,10 @@ for (i in 1:999) {
 }
 
 SPR <- cbind(years=c(1:100),SPR)
-save(SPR, file = "input/SPR_fmsy.RData")
-medians_SPR  <- apply(SPR, 1, median) ## medians
+#save(SPR, file = "input/SPR_fmsy.RData")
+
+### quantitative measures
+medians_SPR  <- apply(SPR, 1, median) 
 SPR_Q5 <- apply(SPR , 1, quantile, probs = 0.05)
 SPR_Q95 <- apply(SPR , 1, quantile, probs = 0.95)
 
@@ -167,6 +181,8 @@ for (i in 1:999) {
 
 FM <- cbind(years=c(1:100),FM)
 #save(FM, file = "input/FM_fmsy1000.RData")
+
+### quantitative measures
 medians_FM  <- apply(FM, 1, median) ## medians
 FM_Q5 <- apply(FM , 1, quantile, probs = 0.05)
 FM_Q95 <- apply(FM , 1, quantile, probs = 0.95)
