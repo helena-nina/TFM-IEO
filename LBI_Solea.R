@@ -425,12 +425,12 @@ p6 <-ggplot(df_plot6,aes(x=Year, y = Lc)) +
   xlab("Years")+ylab("Lmean/LF=M") + theme(legend.title =element_blank())
 
 
-jpeg("plots/ind_LBI_scn4.jpeg", width = 2900, height = 2000, res = 300)
+#jpeg("plots/ind_LBI_scn4.jpeg", width = 2900, height = 2000, res = 300)
 ggarrange(p1, p2, p3, p4, p5, p6,
           ncol = 2, nrow = 3,
           common.legend = TRUE,
           legend = "bottom")
-dev.off()
+#dev.off()
 
 
 
