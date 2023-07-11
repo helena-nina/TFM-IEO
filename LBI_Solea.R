@@ -16,14 +16,21 @@ source("utilities_vpaz.R") # Historical series traffic light table function, mod
 library(ggpubr)
 library(cowplot)
 
-### We load size composition data 
-load("~/TFM-IEO/input/freq_list_fmsy.RData")
+### We load size composition data for each scenario
+
+#load("~/TFM-IEO/input/freq_list_fmsy.RData")
+#load("~/TFM-IEO/input/freq_list_0.5fmsy.RData")
+#load("~/TFM-IEO/input/freq_list_fcrash.RData")
+load("~/TFM-IEO/input/freq_list_scn4.RData")
 
 ### We check that they have been imported correctly
 head(freq_list)
 
 ### weights
-load("~/TFM-IEO/input/wei_list_fmsy.RData")
+#load("~/TFM-IEO/input/wei_list_fmsy.RData")
+#load("~/TFM-IEO/input/wei_list_0.5fmsy.RData")
+#load("~/TFM-IEO/input/wei_list_fcrash.RData")
+load("~/TFM-IEO/input/wei_list_scn4.RData")
 
 ### We check that they have been imported correctly
 head(wei_list)
@@ -180,6 +187,8 @@ ref_Pmega <- rep(0.3,100)
 ref_Lmean_Lopt <- rep(0.9,100)
 ref_Lmean_L_FeM <- rep(1,100)
 
+### plots for scenario 1
+
 ### Lc_Lmat
 
 Lc_Lmatgg <- data.frame(years, medians_Lc_Lmat, Lc_LmatQ5, Lc_LmatQ95,ref_Lc_Lmat)
@@ -286,11 +295,143 @@ p6 <-ggplot(df_plot6,aes(x=Year, y = Lc, group=lines)) +
 
 
 
-jpeg("plots/ind_LBI_scn1.jpeg", width = 2900, height = 2000, res = 300)
+#jpeg("plots/ind_LBI_scn1.jpeg", width = 2900, height = 2000, res = 300)
+ggarrange(p1, p2, p3, p4, p5, p6,
+          ncol = 2, nrow = 3,
+          common.legend = TRUE,
+          legend = "bottom")
+#dev.off()
+
+### new references for scnarios 2,3 y 4
+
+ref_fmsy_Lc_Lmat <- rep(0.94,100)
+ref_fmsy_L25_Lmat <- rep(1.02,100)
+ref_fmsy_Lmax5_Linf <- rep(0.9,100)
+ref_fmsy_Pmega <- rep(0.15,100)
+ref_fmsy_Lmean_Lopt <- rep(0.96,100)
+ref_fmsy_Lmean_L_FeM <- rep(1.03,100)
+
+### plots for scenarios 2,3 y 4
+
+### Lc_Lmat
+
+Lc_Lmatgg <- data.frame(years, medians_Lc_Lmat, Lc_LmatQ5, Lc_LmatQ95,ref_Lc_Lmat,ref_fmsy_Lc_Lmat)
+
+df_plot=data.frame(Year=rep(Lc_Lmatgg$years,5),
+                   Lc=c(medians_Lc_Lmat,Lc_LmatQ5,Lc_LmatQ95,ref_Lc_Lmat,ref_fmsy_Lc_Lmat),
+                   lines=c(rep("median",100),
+                           rep("quantile 5",100),
+                           rep("quantile 95",100),
+                           rep("reference",100),
+                           rep("reference FMSY",100)))
+
+
+p1 <-ggplot(df_plot,aes(x=Year, y = Lc)) +
+  geom_line(aes(linetype=lines,color=lines))+
+  scale_color_manual(values = c(rep("black",3),"red","blue"))+
+  scale_linetype_manual(values=c("solid","dashed","dashed","dashed","dashed"))+
+  xlab("Years")+ylab("Lc/Lmat") + theme(legend.title =element_blank())
+
+
+
+### L25_Lmat
+
+
+L25_Lmatgg <- data.frame(years, medians_L25_Lmat, L25_LmatQ5, L25_LmatQ95,ref_L25_Lmat,ref_fmsy_L25_Lmat)
+
+df_plot2=data.frame(Year=rep(L25_Lmatgg$years,5),
+                    Lc=c(medians_L25_Lmat,L25_LmatQ5,L25_LmatQ95,ref_L25_Lmat,ref_fmsy_L25_Lmat),
+                    lines = c(rep("median",100),
+                              rep("quantile 5",100),
+                              rep("quantile 95",100),
+                              rep("reference",100),
+                              rep("reference FMSY",100)))
+
+p2 <- ggplot(df_plot2,aes(x=Year, y = Lc)) +
+  geom_line(aes(linetype=lines,color=lines))+
+  scale_color_manual(values = c(rep("black",3),"red","blue"))+ scale_linetype_manual(values=c("solid","dashed","dashed","dashed","dashed"))+
+  xlab("Years")+ylab("L25/Lmat") + theme(legend.title =element_blank())
+
+### Lmax5_Linf
+
+
+Lmax5_Linfgg <- data.frame(years, medians_Lmax5_Linf, Lmax5_LinfQ5, Lmax5_LinfQ95,ref_Lmax5_Linf,ref_fmsy_Lmax5_Linf)
+df_plot3 = data.frame(Year=rep(Lmax5_Linfgg$years,5),
+                      Lc=c(medians_Lmax5_Linf,Lmax5_LinfQ5,Lmax5_LinfQ95,ref_Lmax5_Linf,ref_fmsy_Lmax5_Linf),
+                      lines=c(rep("median",100),
+                              rep("quantile 5",100),
+                              rep("quantile 95",100),
+                              rep("reference",100),
+                              rep("reference FMSY",100)))
+
+p3 <- ggplot(df_plot3,aes(x=Year, y = Lc)) +
+  geom_line(aes(linetype=lines,color=lines))+
+  scale_color_manual(values = c(rep("black",3),"red","blue"))+
+  scale_linetype_manual(values=c("solid","dashed","dashed","dashed","dashed"))+
+  xlab("Years")+ylab("Lmax5/Linf") + theme(legend.title =element_blank())
+
+### Pmega
+
+Pmegagg <- data.frame(years, medians_Pmega, PmegaQ5, PmegaQ95,ref_Pmega,ref_fmsy_Pmega)
+
+df_plot4 = data.frame(Year=rep(Pmegagg$years,5),
+                      Lc=c(medians_Pmega,PmegaQ5,PmegaQ95,ref_Pmega,ref_fmsy_Pmega),
+                      lines=c(rep("median",100),
+                              rep("quantile 5",100),
+                              rep("quantile 95",100),
+                              rep("reference",100),
+                              rep("reference FMSY",100)))
+p4 <- ggplot(df_plot4,aes(x=Year, y = Lc)) +
+  geom_line(aes(linetype=lines,color=lines))+
+  scale_color_manual(values = c(rep("black",3),"red","blue"))+
+  scale_linetype_manual(values=c("solid","dashed","dashed","dashed","dashed"))+
+  xlab("Years")+ylab("Pmega") + theme(legend.title =element_blank())
+
+### Lmean_Lopt
+
+Lmean_Loptgg <- data.frame(years, medians_Lmean_Lopt,Lmean_LoptQ5, Lmean_LoptQ95,ref_Lmean_Lopt,ref_fmsy_Lmean_Lopt)
+
+df_plot5 = data.frame(Year=rep(Lmean_Loptgg$years,5),
+                      Lc=c(medians_Lmean_Lopt,Lmean_LoptQ5,Lmean_LoptQ95,ref_Lmean_Lopt,ref_fmsy_Lmean_Lopt),
+                      lines=c(rep("median",100),
+                              rep("quantile 5",100),
+                              rep("quantile 95",100),
+                              rep("reference",100),
+                              rep("reference FMSY",100)))
+
+p5 <- ggplot(df_plot5,aes(x=Year, y = Lc)) +
+  geom_line(aes(linetype=lines,color=lines))+
+  scale_color_manual(values = c(rep("black",3),"red","blue"))+
+  scale_linetype_manual(values=c("solid","dashed","dashed","dashed","dashed"))+
+  xlab("Years")+ylab("Lmean/Lopt") + theme(legend.title =element_blank())
+
+
+### Lmean_L_FeM
+
+Lmean_L_FeMgg <- data.frame(years, medians_Lmean_L_FeM,Lmean_L_FeMQ5, Lmean_L_FeMQ95,ref_Lmean_L_FeM,ref_fmsy_Lmean_L_FeM)
+
+df_plot6 = data.frame(Year=rep(Lmean_L_FeMgg$years,5),
+                      Lc=c(medians_Lmean_L_FeM,Lmean_L_FeMQ5,Lmean_L_FeMQ95,ref_Lmean_L_FeM,ref_fmsy_Lmean_L_FeM),
+                      lines = c(rep("median",100),
+                                rep("quantile 5",100),
+                                rep("quantile 95",100),
+                                rep("reference",100),
+                                rep("reference FMSY",100)))
+
+p6 <-ggplot(df_plot6,aes(x=Year, y = Lc)) +
+  geom_line(aes(linetype=lines,color=lines))+
+  scale_color_manual(values = c(rep("black",3),"red","blue"))+
+  scale_linetype_manual(values=c("solid","dashed","dashed","dashed","dashed"))+
+  xlab("Years")+ylab("Lmean/LF=M") + theme(legend.title =element_blank())
+
+
+jpeg("plots/ind_LBI_scn4.jpeg", width = 2900, height = 2000, res = 300)
 ggarrange(p1, p2, p3, p4, p5, p6,
           ncol = 2, nrow = 3,
           common.legend = TRUE,
           legend = "bottom")
 dev.off()
+
+
 
 
