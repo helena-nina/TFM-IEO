@@ -27,6 +27,7 @@ load("~/TFM-IEO/input/freq_list_scn4.RData")
 head(freq_list)
 
 ### weights
+
 #load("~/TFM-IEO/input/wei_list_fmsy.RData")
 #load("~/TFM-IEO/input/wei_list_0.5fmsy.RData")
 #load("~/TFM-IEO/input/wei_list_fcrash.RData")

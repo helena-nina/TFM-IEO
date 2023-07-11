@@ -19,32 +19,26 @@ solePars@MK <- 1.41
 solePars@M <- 0.31 
 solePars@L_units <- "cm"
 
-### We load size composition data 
-load("~/TFM/Repository/wklifeVII-1.0/R/input/freq_list_fmsy.RData")
+### We load size composition data for each scenario
+
+#load("~/TFM-IEO/input/freq_list_fmsy.RData")
+#load("~/TFM-IEO/input/freq_list_0.5fmsy.RData")
+#load("~/TFM-IEO/input/freq_list_fcrash.RData")
+load("~/TFM-IEO/input/freq_list_scn4.RData")
 
 ### We check that they have been imported correctly
 head(freq_list)
 
-### weights
-load("~/TFM/Repository/wklifeVII-1.0/R/input/wei_list_fmsy.RData")
-
-### We check that they have been imported correctly
-head(wei_list)
-
 ### save de data as an .csv
 
 lapply(seq_along(freq_list), function(i) {
-  write.csv(freq_list[[i]], file.path("freq_list",paste0(names(freq_list)[i],".csv")), row.names = FALSE)
-})
-
-lapply(seq_along(wei_list), function(i) {
-  write.csv(wei_list[[i]], file.path("wei_list",paste0(names(wei_list)[i], ".csv")), row.names = FALSE)
+  write.csv(freq_list[[i]], file.path("input/LBSPR/freq_list",paste0(names(freq_list)[i],".csv")), row.names = FALSE)
 })
 
 ### read data
 
 ### Specify the complete path
-dir_path <- file.path(getwd(), "freq_list")
+dir_path <- file.path(getwd(), "input/LBSPR/freq_list")
 
 ### Get the list of names of CSV files in the folder 
 file_names <- list.files(dir_path, pattern = "\\.csv$")
@@ -60,7 +54,7 @@ data_freq <- lapply(file_names, function(file_name) {
 
 ### Set working directory to the folder containing the .csv files
 
-setwd("freq_list")
+setwd("input/LBSPR/freq_list")
 
 ### list of all .csv files in the folder
 
@@ -69,17 +63,12 @@ archivos_csv <- list.files(pattern = "*.csv")
 ### Use a for loop to read each .csv file one by one and save it in the working environment
 ### as an object with the same name as the file.
 
-for (archivo in archivos_csv) {
-  # Leer el archivo .csv y guardar los datos en un objeto con el mismo nombre que el archivo
-  nombre_objeto <- gsub(".csv", "", archivo) # Obtener el nombre del archivo sin la extensión .csv
-  assign(nombre_objeto, read.csv(archivo)) # Guardar los datos en un objeto con el mismo nombre que el archivo
+for (file in file_csv) {
+  # Read the .csv file and save the data in an object with the same name as the file
+  length <- gsub(".csv", "", file) # Get file name without .csv extension
+  assign(length, read.csv(file)) # Save the data in an object with the same name as the file
 }
 
-
-#freq1 <- read.csv("1.csv",stringsAsFactors = FALSE)
-#freq <- freq1[,1:13]
-# write.csv(freq, "input/freq.csv",row.names = FALSE)
-# freq <- read.csv("input/freq.csv",stringsAsFactors = FALSE)
 niter <- length(freq_list)
 soleLenFreq <- list()
 soleFit <- list()
@@ -100,7 +89,7 @@ for (i in 1:niter) {
 #2.56 hours
 
 #save(soleFit, file = "input/soleFit.RData")
-#save(soleFit, file = "input/soleFitmix.RData")
+#save(soleFit, file = "input/soleFitscn4.RData")
 #save(soleFit, file = "input/soleFitcrash.RData")
 #save(soleFit, file = "input/soleFit0.5fmsy.RData")
 
@@ -137,7 +126,7 @@ for (i in 1:niter) {
 
 SPR <- data.frame(iter1 = soleFit_list[[1]][,2])
 
-for (i in 1:999) {
+for (i in 1:(niter)-1) {
   new_col <-  soleFit_list[[i+1]][,2]
   SPR[ , i+1] <- new_col
   colnames(SPR)[i+1] <- paste0("iter", i+1)
@@ -173,7 +162,7 @@ p1 <- ggplot(spr_plot,aes(x=Year,y=spr, group = lines)) +
 
 FM <- data.frame(iter1 = soleFit_list[[1]][,1])
 
-for (i in 1:999) {
+for (i in 1:(niter-1)) {
   new_col <-  soleFit_list[[i+1]][,1]
   FM[ , i+1] <- new_col
   colnames(FM)[i+1] <- paste0("iter", i+1)
@@ -181,8 +170,6 @@ for (i in 1:999) {
 
 FM <- cbind(years=c(1:100),FM)
 #save(FM, file = "input/FM_fmsy1000.RData")
-
-### quantitative measures
 medians_FM  <- apply(FM, 1, median) ## medians
 FM_Q5 <- apply(FM , 1, quantile, probs = 0.05)
 FM_Q95 <- apply(FM , 1, quantile, probs = 0.95)
