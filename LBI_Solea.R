@@ -17,13 +17,13 @@ library(ggpubr)
 library(cowplot)
 
 ### We load size composition data 
-load("~/TFM/Repository/wklifeVII-1.0/R/input/freq_list_fmsy.RData")
+load("~/TFM-IEO/input/freq_list_fmsy.RData")
 
 ### We check that they have been imported correctly
 head(freq_list)
 
 ### weights
-load("~/TFM/Repository/wklifeVII-1.0/R/input/wei_list_fmsy.RData")
+load("~/TFM-IEO/input/wei_list_fmsy.RData")
 
 ### We check that they have been imported correctly
 head(wei_list)
@@ -195,7 +195,7 @@ df_plot=data.frame(Year=rep(Lc_Lmatgg$years,4),
 p1 <-ggplot(df_plot,aes(x=Year, y = Lc, group=lines)) +
   geom_line(aes(linetype=lines,color=lines))+
   scale_color_manual(values = c(rep("black",3),"red"))+
-  scale_y_continuous(limits = c(0.7, max(df_plot$Lc)+0.2)) +
+  scale_y_continuous(limits = c(0.78, max(df_plot$Lc)+0.2)) +
   xlab("Years")+ylab("Lc/Lmat") + theme(legend.title =element_blank())
 
 
@@ -213,7 +213,7 @@ df_plot2=data.frame(Year=rep(L25_Lmatgg$years,4),
 p2 <- ggplot(df_plot2,aes(x=Year, y = Lc, group=lines)) +
   geom_line(aes(linetype=lines,color=lines))+
   scale_color_manual(values = c(rep("black",3),"red"))+
-  scale_y_continuous(limits = c(0.7, max(df_plot$Lc)+0.2)) +
+  scale_y_continuous(limits = c(0.78, max(df_plot$Lc)+0.2)) +
   xlab("Years")+ylab("L25/Lmat") + theme(legend.title =element_blank())
 
 ### Lmax5_Linf
@@ -229,7 +229,7 @@ df_plot3 = data.frame(Year=rep(Lmax5_Linfgg$years,4),
 p3 <- ggplot(df_plot3,aes(x=Year, y = Lc, group=lines)) +
   geom_line(aes(linetype=lines,color=lines))+
   scale_color_manual(values = c(rep("black",3),"red"))+
-  scale_y_continuous(limits = c(0.7, max(df_plot$Lc)+0.2)) +
+  scale_y_continuous(limits = c(0.78, max(df_plot$Lc))) +
   xlab("Years")+ylab("Lmax5/Linf") + theme(legend.title =element_blank())
 
 ### Pmega
@@ -263,7 +263,7 @@ df_plot5 = data.frame(Year=rep(Lmean_Loptgg$years,4),
 p5 <- ggplot(df_plot5,aes(x=Year, y = Lc, group=lines)) +
   geom_line(aes(linetype=lines,color=lines))+
   scale_color_manual(values = c(rep("black",3),"red"))+
-  scale_y_continuous(limits = c(0.7, max(df_plot$Lc)+0.2)) +
+  scale_y_continuous(limits = c(0.78, max(df_plot$Lc)+0.2)) +
   xlab("Years")+ylab("Lmean/Lopt") + theme(legend.title =element_blank())
 
 
@@ -281,16 +281,16 @@ df_plot6 = data.frame(Year=rep(Lmean_L_FeMgg$years,4),
 p6 <-ggplot(df_plot6,aes(x=Year, y = Lc, group=lines)) +
   geom_line(aes(linetype=lines,color=lines))+
   scale_color_manual(values = c(rep("black",3),"red"))+
-  scale_y_continuous(limits = c(0.7, max(df_plot$Lc)+0.2)) +
+  scale_y_continuous(limits = c(0.78, max(df_plot$Lc)+0.2)) +
   xlab("Years")+ylab("Lmean/LF=M") + theme(legend.title =element_blank())
 
 
 
-#jpeg("Ind_fmsy.jpeg", width = 2100, height = 1100, res = 300)
+jpeg("plots/ind_LBI_scn1.jpeg", width = 2900, height = 2000, res = 300)
 ggarrange(p1, p2, p3, p4, p5, p6,
           ncol = 2, nrow = 3,
           common.legend = TRUE,
           legend = "bottom")
-#dev.off()
+dev.off()
 
 
