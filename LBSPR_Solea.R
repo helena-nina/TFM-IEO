@@ -95,8 +95,9 @@ for (i in 1:niter) {
 
 soleFit_list <- list()
 
+### individual point estimates for each year for each iter
+
 for (i in 1:niter) {
-  #soleFit_list[[i]] <- soleFit[[i]]@Ests
   soleFit_list[[i]] <- data.frame(rawFM=soleFit[[i]]@FM, rawSPR=soleFit[[i]]@SPR)
 }
 
@@ -108,21 +109,6 @@ for (i in 1:niter) {
 ### ------------------------------------------------------------------------ ###
 ### Plots ####
 ### ------------------------------------------------------------------------ ###
-
-#plotSize(soleLenFreq)
-
-### Plotting length distribution fit 
-
-#plotSize(soleFit)
-
-### Plotting yearly selectivity and maturity
-
-#plotMat(soleFit)
-
-### Plotting yearly selectivity, F/M and SPR
-
-#plotEsts(soleFit)
-
 
 SPR <- data.frame(iter1 = soleFit_list[[1]][,2])
 
