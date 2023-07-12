@@ -88,10 +88,10 @@ for (i in 1:niter) {
 
 #2.56 hours
 
-#save(soleFit, file = "input/soleFit.RData")
-#save(soleFit, file = "input/soleFitscn4.RData")
-#save(soleFit, file = "input/soleFitcrash.RData")
-#save(soleFit, file = "input/soleFit0.5fmsy.RData")
+#save(soleFit, file = "input/soleFit_scn1.RData")
+#save(soleFit, file = "input/soleFit_scn2.RData")
+#save(soleFit, file = "input/soleFit_scn3.RData")
+#save(soleFit, file = "input/soleFit_scn4.RData")
 
 soleFit_list <- list()
 
@@ -101,10 +101,6 @@ for (i in 1:niter) {
   soleFit_list[[i]] <- data.frame(rawFM=soleFit[[i]]@FM, rawSPR=soleFit[[i]]@SPR)
 }
 
-
-# save(soleFit, file = "input/soleFit_list_fmsy.RData")
-# save(soleFit, file = "input/soleFit_list_fmsy1000.RData")
-# save(soleFit, file = "input/soleFit_list_fcrash.RData")
 
 ### ------------------------------------------------------------------------ ###
 ### Plots ####
